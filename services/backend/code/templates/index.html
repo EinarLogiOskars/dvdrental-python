@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Films {% endblock %}</h1>
+    {% for film in films %}
+        <div class='film' style="background-color: aqua;">
+            <h3>{{ film.title }}</h3>
+            <i><p>{{ film.description }}</p></i>
+            <i><p>({{ film.length }} minutes)</p></i>
+            <p class='review'>{{ film[4] }}</p>
+            <i><p>Release Year: {{ film.release_year }}</p></i>
+        </div>
+    {% endfor %}
+{% endblock %}
