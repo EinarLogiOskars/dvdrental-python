@@ -31,22 +31,6 @@ services:
     expose:
       - 5432:5432
 
-  frontend:
-    build:
-      context: ./services/frontend
-      dockerfile: Dockerfile.yml
-    volumes:
-      - "./services/frontend:/usr/src/dvdrental-app"
-      - "/usr/src/dvdrental-app/node_modules"
-    ports:
-      - 3000:3000
-    environment:
-      - NODE_ENV=development
-      - BACKEND_URL=http://localhost:8000
-    depends_on:
-      - backend
-    
-
   adminer:
     image: adminer
     restart: always
