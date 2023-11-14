@@ -1,4 +1,4 @@
-# DVD rental app
+# DVD rental app  ---  WIP
 
 ### This is a docker app containing two services;
 
