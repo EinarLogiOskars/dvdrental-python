@@ -11,7 +11,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./services/backend/code:/usr/src/dvdrental-app
+      - ./services/backend/code:/usr/src/dvdrental_app
     environment:
       FLASK_DEBUG: "true"
 

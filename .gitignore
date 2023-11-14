@@ -1,2 +1,2 @@
-services/frontend
+.pytest_cache
 docker-compose-old.yml

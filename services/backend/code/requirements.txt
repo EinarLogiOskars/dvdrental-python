@@ -4,3 +4,4 @@ flask-cors
 flask-sqlalchemy
 flask-login
 flask-jwt-extended
+pytest
