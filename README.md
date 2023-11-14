@@ -41,3 +41,7 @@ folder containing the project and run the command `docker compose up`. \
 Now the docker app should be up and running on your computer the last thing we need is a UI for the app, \
 you can find one I created in React here: \
 https://github.com/EinarLogiOskars/react-frontend.
+
+### Testing
+
+To run the tests, again navigate to the project directory in a terminal and run `docker-compose exec backend pytest -v`.

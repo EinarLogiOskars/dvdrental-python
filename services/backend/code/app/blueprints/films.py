@@ -51,7 +51,8 @@ def add_film():
         replacement_cost = request.form['replacement_cost']
         rating = request.form['rating']
         category = request.form['category']
-        actors = request.form['actors']
+        actor = request.form['actor']
+        film_id = None
 
         con = get_db_connection()
         cur = con.cursor(cursor_factory=RealDictCursor)
@@ -59,6 +60,12 @@ def add_film():
         try:
             cur.execute("INSERT INTO film(title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
                         (title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating))
+            con.commit()
+            cur.execute("SELECT * FROM film WHERE title = %s ORDER BY film_id DESC", (title,))
+            film_id = json.dumps(cur.fetchone()['film_id'])
+            cur.execute("INSERT INTO film_actor(actor_id, film_id) VALUES (%s, %s)", (actor, film_id))
+            con.commit()
+            cur.execute("INSERT INTO film_category(film_id, category_id) VALUES (%s, %s)", (film_id, category))
             con.commit()
         except con.DataError:
             cur.close()
@@ -69,10 +76,8 @@ def add_film():
             con.close()
             return "Invalid language", 400
         else:
-            cur.execute("SELECT * FROM film WHERE title = %s ORDER BY film_id DESC", (title,))
-            film_id = json.dumps(cur.fetchone()['film_id'])
-            cur.execute('INSERT INTO film_list(fid, title, description, category, price, length, rating, actors) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
-                        (film_id, title, description, category, rental_rate, length, rating, actors))
+            #cur.execute('INSERT INTO film_list(fid, title, description, category, price, length, rating, actors) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
+            #            (film_id, title, description, category, rental_rate, length, rating, actors))
             cur.close()
             con.close()
             return film_id, 201
