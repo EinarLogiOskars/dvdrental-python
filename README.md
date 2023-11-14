@@ -27,3 +27,17 @@
         SQL - I needed to brush up on SQL. 
     </li>
 </ul>
+
+### Usage
+
+The application can be seen in action by following the steps below.
+
+In order to use this application you first of all need to have docker installed - https://www.docker.com/. \
+After downloading and installing docker (If you didn't have it already) you need to clone the repository. \
+\
+Once you have the repository cloned and docker installed you need to open a terminal and navigate to the \
+folder containing the project and run the command `docker compose up`. \
+\
+Now the docker app should be up and running on your computer the last thing we need is a UI for the app, \
+you can find one I created in React here: \
+https://github.com/EinarLogiOskars/react-frontend.
