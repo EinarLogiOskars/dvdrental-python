@@ -50,8 +50,8 @@ def add_film():
         length = request.form['length']
         replacement_cost = request.form['replacement_cost']
         rating = request.form['rating']
-        category = request.form['category']
-        actor = request.form['actor']
+        category = request.form['category'].split(',')
+        actor = request.form['actor'].split(',')
         film_id = None
 
         con = get_db_connection()
@@ -63,9 +63,9 @@ def add_film():
             con.commit()
             cur.execute("SELECT * FROM film WHERE title = %s ORDER BY film_id DESC", (title,))
             film_id = json.dumps(cur.fetchone()['film_id'])
-            cur.execute("INSERT INTO film_actor(actor_id, film_id) VALUES (%s, %s)", (actor, film_id))
+            cur.executemany("INSERT INTO film_actor(film_id, actor_id) VALUES ({0}, %s)".format(film_id), actor,)
             con.commit()
-            cur.execute("INSERT INTO film_category(film_id, category_id) VALUES (%s, %s)", (film_id, category))
+            cur.executemany("INSERT INTO film_category(film_id, category_id) VALUES ({0}, %s)".format(film_id), category,)
             con.commit()
         except con.DataError:
             cur.close()
