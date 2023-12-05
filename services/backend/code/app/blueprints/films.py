@@ -24,6 +24,19 @@ def film_list():
     con.close()
     return data, 200
 
+@bp.route('film_list/<filmid>', methods=['GET'])
+@jwt_required()
+def film_list_entry(filmid):
+    if request.method == 'GET':
+        con = get_db_connection()
+        cur = con.cursor(cursor_factory=RealDictCursor)
+        cur.execute("SELECT * FROM film_list WHERE fid = '{}'".format(filmid))
+        data = cur.fetchone()
+        cur.close()
+        con.close()
+        return data
+    return 'error'
+
 @bp.route('film/<filmid>', methods=['GET'])
 @jwt_required()
 def film(filmid):
@@ -63,10 +76,12 @@ def add_film():
             con.commit()
             cur.execute("SELECT * FROM film WHERE title = %s ORDER BY film_id DESC", (title,))
             film_id = json.dumps(cur.fetchone()['film_id'])
-            cur.executemany("INSERT INTO film_actor(film_id, actor_id) VALUES ({0}, %s)".format(film_id), actor,)
-            con.commit()
-            cur.executemany("INSERT INTO film_category(film_id, category_id) VALUES ({0}, %s)".format(film_id), category,)
-            con.commit()
+            for a in actor:
+                cur.execute("INSERT INTO film_actor(film_id, actor_id) VALUES ({0}, {1})".format(film_id, a))
+                con.commit()
+            for c in category:
+                cur.execute("INSERT INTO film_category(film_id, category_id) VALUES ({0}, {1})".format(film_id, c))
+                con.commit()
         except con.DataError:
             cur.close()
             con.close()
@@ -76,11 +91,32 @@ def add_film():
             con.close()
             return "Invalid language", 400
         else:
-            #cur.execute('INSERT INTO film_list(fid, title, description, category, price, length, rating, actors) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
-            #            (film_id, title, description, category, rental_rate, length, rating, actors))
             cur.close()
             con.close()
             return film_id, 201
+        
+@bp.route('remove', methods=['POST'])
+@jwt_required()
+def remove_film():
+    if request.method == 'POST':
+        film_id = request.form['film_id']
+        error = None
+        con = get_db_connection()
+        cur = con.cursor(cursor_factory=RealDictCursor)
+        try:
+            cur.execute('DELETE FROM film WHERE film_id = {0}'.format(film_id))
+            con.commit()
+        except:
+            error = "Something went wrong. Please make sure you are posting a film_id that is registered."
+            cur.close()
+            con.close()
+            return error, 400
+        else:
+            affectedRow = ('Affected rows: {0}'.format(cur.rowcount))
+            cur.close()
+            con.close()
+            return affectedRow, 200
+
         
 
         

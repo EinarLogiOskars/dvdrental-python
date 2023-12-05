@@ -90,10 +90,10 @@ def remove():
             cur.execute('DELETE FROM staff WHERE username = %s', (username,))
             con.commit()
         except:
-            error = "Something went wrong!"
+            error = "Something went wrong. Please make sure "
             cur.close()
             con.close()
-            return error
+            return error, 400
         else:
             affectedRow = ('Affected rows: {0}'.format(cur.rowcount))
             cur.close()

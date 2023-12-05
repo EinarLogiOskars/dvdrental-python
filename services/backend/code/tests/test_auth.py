@@ -37,7 +37,7 @@ def test_login_incorrect_username(client):
 
 def test_login_incorrect_password(client):
     response = client.post("/auth/login", data={
-        "username": "_test_username",
+        "username": "test_username",
         "password": "wrong_test_password",
     })
     assert response.status_code == 401
