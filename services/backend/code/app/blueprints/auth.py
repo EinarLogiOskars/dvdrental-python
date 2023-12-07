@@ -21,7 +21,7 @@ def register():
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
-        username = request.form['username']
+        username = request.form['username'].lower()
         password = request.form['password']
         connect = get_db_connection()
         cur = connect.cursor(cursor_factory=RealDictCursor)
@@ -90,7 +90,7 @@ def remove():
             cur.execute('DELETE FROM staff WHERE username = %s', (username,))
             con.commit()
         except:
-            error = "Something went wrong. Please make sure "
+            error = "Something went wrong. Please make sure you are posting a username that is registered as a string format."
             cur.close()
             con.close()
             return error, 400
@@ -104,7 +104,7 @@ def remove():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        username = request.form['username'].lower()
         password = request.form['password']
         error = None
         connection = get_db_connection()

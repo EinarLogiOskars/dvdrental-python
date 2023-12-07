@@ -34,7 +34,7 @@ def film_list_entry(filmid):
         data = cur.fetchone()
         cur.close()
         con.close()
-        return data
+        return data, 200
     return 'error'
 
 @bp.route('film/<filmid>', methods=['GET'])
@@ -47,7 +47,7 @@ def film(filmid):
         data = cur.fetchone()
         cur.close()
         con.close()
-        return data
+        return data, 200
     return 'error'
 
 @bp.route('add', methods=['POST'])
@@ -89,7 +89,7 @@ def add_film():
         except con.IntegrityError:
             cur.close()
             con.close()
-            return "Invalid language", 400
+            return "Invalid language or category", 400
         else:
             cur.close()
             con.close()
