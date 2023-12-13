@@ -61,7 +61,7 @@ def test_remove(app, client):
 
         assert response.status_code == 200 and response.data == b"Affected rows: 1"
 
-def test_remove_dublicate(app, client):
+def test_remove_nonexistent(app, client):
     with app.app_context():
         access_token = create_access_token('test_username')
         headers = {
