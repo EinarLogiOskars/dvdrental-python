@@ -1,4 +1,4 @@
-# DVD rental app  ---  WIP
+# DVD rental app  ---  I made this project to get faniliar with python. It was purely for educational purposes.
 
 ### This is a docker app containing two services;
 
